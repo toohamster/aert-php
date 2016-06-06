@@ -1,4 +1,7 @@
-<?php
+<?php namespace Aert;
+
+define('SECACHE_SIZE','64M');
+
 /**
  * secache
  * MTI licence
@@ -6,10 +9,9 @@
  * @version $Id$
  *
  * @link https://github.com/shopex/secache
+ * @author 449211678@qq.com
  */
-define('AERT_SECACHE_SIZE','64M');
-
-class Aert_Secache
+class Secache
 {
 
     var $idx_node_size = 40;
@@ -322,7 +324,7 @@ class Aert_Secache
                 ftruncate($this->_rs,$this->idx_node_base);
             }
 
-            $this->max_size = $this->_parse_str_size(AERT_SECACHE_SIZE,15728640); //default:15m
+            $this->max_size = $this->_parse_str_size(SECACHE_SIZE,15728640); //default:15m
             $this->_puts($this->header_padding,pack('V1a*',$this->max_size,$this->ver));
 
             ksort($this->_bsize_list);

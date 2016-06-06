@@ -1,10 +1,10 @@
-<?php
+<?php namespace Aert;
 /**
  * AertDb表模型 CRUD 包装器
  * 
- * @author ken.xu@yunzhihui.com
+ * @author 449211678@qq.com
  */
-class Aert_Table
+class Table
 {
 	/**
 	 * 数据库链接节点名
@@ -30,7 +30,7 @@ class Aert_Table
 	 * @param string $table
 	 * @param string $query_node
 	 * 
-	 * @return Aert_Table
+	 * @return Table
 	 */
 	static function instance($table,$query_node='')
 	{
@@ -60,7 +60,7 @@ class Aert_Table
 	 */
 	function getAll($cond=null, $fields='*', $sort=null, $limit=null, $calc_total=false)
 	{
-		return Aert_DbRepo::queryNode($this->queryNode)->select($this->table,$cond, $fields, $sort, $limit, $calc_total);
+		return DbRepo::queryNode($this->queryNode)->select($this->table,$cond, $fields, $sort, $limit, $calc_total);
 	}
 	
 	/**
@@ -74,7 +74,7 @@ class Aert_Table
      */
 	function getOne($cond=null ,$fields='*', $sort=null)
 	{
-		return Aert_DbRepo::queryNode($this->queryNode)->selectRow($this->table,$cond, $fields, $sort);
+		return DbRepo::queryNode($this->queryNode)->selectRow($this->table,$cond, $fields, $sort);
 	}
 	
 	/**
@@ -88,7 +88,7 @@ class Aert_Table
      */
 	function count($cond=null, $fields='*', $distinct=false)
 	{
-		return Aert_DbRepo::queryNode($this->queryNode)->count($this->table,$cond, $fields, $distinct);
+		return DbRepo::queryNode($this->queryNode)->count($this->table,$cond, $fields, $distinct);
 	}
 	
 	/**
@@ -101,7 +101,7 @@ class Aert_Table
      */
 	function insert(array $row, $pkval=false)
 	{
-		return Aert_DbRepo::queryNode($this->queryNode)->insert($this->table, $row, $pkval);
+		return DbRepo::queryNode($this->queryNode)->insert($this->table, $row, $pkval);
 	}
 	
 	/**
@@ -114,7 +114,7 @@ class Aert_Table
 	 */
 	function update(array $row, $cond=null)
 	{
-		return Aert_DbRepo::queryNode($this->queryNode)->update($this->table, $row, $cond);
+		return DbRepo::queryNode($this->queryNode)->update($this->table, $row, $cond);
 	}
 	
 	/**
@@ -126,7 +126,7 @@ class Aert_Table
 	 */
 	function del($cond=null)
 	{
-		return Aert_DbRepo::queryNode($this->queryNode)->del($this->table, $cond);
+		return DbRepo::queryNode($this->queryNode)->del($this->table, $cond);
 	}
 	
 	/**
@@ -140,7 +140,7 @@ class Aert_Table
 	 */
 	function incrField($field, $incr=1, $cond=null)
 	{
-		return Aert_DbRepo::queryNode($this->queryNode)->incrField($this->table, $field, $incr, $cond);
+		return DbRepo::queryNode($this->queryNode)->incrField($this->table, $field, $incr, $cond);
 	}
 	
 	/**
@@ -154,7 +154,7 @@ class Aert_Table
 	 */
 	function decrField($field, $decr=1, $cond=null)
 	{
-		return Aert_DbRepo::queryNode($this->queryNode)->incrField($this->table, $field, (-1 * $decr), $cond);
+		return DbRepo::queryNode($this->queryNode)->incrField($this->table, $field, (-1 * $decr), $cond);
 	}
 		
 }

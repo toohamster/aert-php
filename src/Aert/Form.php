@@ -1,12 +1,12 @@
-<?php
+<?php namespace Aert;
 /**
- * Aert_Form 类
+ * Form 类
  *
  * 实现表单的验证
  *
- * @author ken.xu@yunzhihui.com
+ * @author 449211678@qq.com
  */
-class Aert_Form
+class Form
 {
 	/*
      * 表单方法类型
@@ -207,7 +207,7 @@ class Aert_Form
         if ( !isset($this->_form_datas[$field]) ) return '';
         
 	    $this->_form_datas[$field] = $xss_clean
-	    						   ? Aert_Security::xss_clean($this->_form_datas[$field], $is_image)
+	    						   ? Security::xss_clean($this->_form_datas[$field], $is_image)
 	    						   : $this->_form_datas[$field];
 
 	    return $this->_form_datas[$field];
@@ -292,7 +292,7 @@ class Aert_Form
 
     public static function xss_clean($val, $is_image = false)
     {
-        return Aert_Security::xss_clean($val, $is_image);
+        return Security::xss_clean($val, $is_image);
     }
 
     /**
@@ -334,7 +334,7 @@ class Aert_Form
     {
         if (empty($rules)) return true;
         
-        $verify = Aert_Verify::getInstance();
+        $verify = Verify::getInstance();
         
         $errors = array(); // $fld -> errorInfo 
         
@@ -417,7 +417,7 @@ class Aert_Form
     {
         if (empty($flds_rules)) return true;
         
-        $verify = Aert_Verify::getInstance();
+        $verify = Verify::getInstance();
         
         if (empty($row)) $row = array() ;
         

@@ -1,15 +1,17 @@
-<?php
+<?php namespace Aert;
 /**
  * IFilter 类
  *
  * 过滤器 , 过滤用户输入的数据
+ *
+ * @author 449211678@qq.com
  */
-class Aert_IFilter
+class IFilter
 {
 	/**
 	 * Remove Invisible Characters
 	 *
-	 * Aert_Security::xss_clean() 有用到
+	 * Security::xss_clean() 有用到
 	 *
 	 * This prevents sandwiching null characters
 	 * between ascii characters, like Java\0script.

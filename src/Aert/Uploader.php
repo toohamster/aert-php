@@ -1,14 +1,14 @@
-<?php
+<?php namespace Aert;
 /** 
-  * Aert_Uploader 类封装了针对上传文件的操作
+  * Uploader 类封装了针对上传文件的操作
   *
-  * @author ken.xu@yunzhihui.com
+  * @author 449211678@qq.com
   */
-class Aert_Uploader
+class Uploader
 {
 
 	/**
-     * 所有的 Aert_UploaderFile 对象实例
+     * 所有的 UploaderFile 对象实例
      *
      * @var array
 	 */
@@ -40,7 +40,7 @@ class Aert_Uploader
                 {
                     if ($error == UPLOAD_ERR_OK)
                     {
-                        $file = new Aert_UploaderFile($postinfo, $field_name, $offset);
+                        $file = new UploaderFile($postinfo, $field_name, $offset);
                         self::$_files["{$field_name}{$offset}"] = $file;
                     }
                 }
@@ -49,7 +49,7 @@ class Aert_Uploader
             {
                 if ($postinfo['error'] == UPLOAD_ERR_OK)
                 {
-                    self::$_files[$field_name] = new Aert_UploaderFile($postinfo, $field_name);
+                    self::$_files[$field_name] = new UploaderFile($postinfo, $field_name);
                 }
             }
         }
@@ -58,7 +58,7 @@ class Aert_Uploader
     /**
      * 获取上传类的单例实例
      *
-     * @return  Aert_Uploader
+     * @return  Uploader
      */
     static function instance()
     {
@@ -125,7 +125,7 @@ class Aert_Uploader
      *
      * @param string $name 上传对象的名字
      *
-     * @return Aert_UploaderFile 指定名字对应的文件对象
+     * @return UploaderFile 指定名字对应的文件对象
      */
     function file($name)
     {
@@ -149,9 +149,9 @@ class Aert_Uploader
 }
 
 /**
- * Aert_UploaderFile 类封装一个上传的文件
+ * UploaderFile 类封装一个上传的文件
  */
-class Aert_UploaderFile
+class UploaderFile
 {
 	/**
 	 * 上传文件信息
@@ -361,7 +361,7 @@ class Aert_UploaderFile
 	 *
      * @param string $dest_path 目的地路径
      *
-     * @return Aert_UploaderFile 连贯接口
+     * @return UploaderFile 连贯接口
 	 */
 	function move($dest_path)
 	{
@@ -386,7 +386,7 @@ class Aert_UploaderFile
      *
      * @param string $dest_path 目的地路径
      *
-     * @return Aert_UploaderFile 连贯接口
+     * @return UploaderFile 连贯接口
      */
     function copy($dest_path)
     {
@@ -397,7 +397,7 @@ class Aert_UploaderFile
     /**
      * 删除上传文件
      *
-     * @return Aert_UploaderFile 连贯接口
+     * @return UploaderFile 连贯接口
      */
     function unlink()
     {

@@ -1,15 +1,14 @@
-<?php
+<?php namespace Aert;
 /**
  * 验证功能组件,支持批处理验证,支持外部扩展验证
  * 
- * @author KenXu
- * @date 2010-8-10 下午07:17:57
+ * @author 449211678@qq.com
  */
-class Aert_Verify 
+class Verify 
 {
 		
 	/**
-	 * @return Aert_Verify
+	 * @return Verify
 	 */
 	static function getInstance()
     {

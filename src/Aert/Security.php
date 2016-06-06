@@ -1,4 +1,4 @@
-<?php
+<?php namespace Aert;
 /**
  * Security Class
  *
@@ -7,8 +7,9 @@
  * @category	Security
  * @author		ExpressionEngine Dev Team
  * @link		http://codeigniter.com/user_guide/libraries/security.html
+ * @author 		449211678@qq.com
  */
-class Aert_Security {
+class Security {
 
 	/**
 	 * Random Hash for protecting URLs
@@ -97,7 +98,7 @@ class Aert_Security {
 		/*
 		 * Remove Invisible Characters
 		 */
-		$str = Aert_IFilter::remove_invisible_characters($str);
+		$str = IFilter::remove_invisible_characters($str);
 
 		// Validate Entities in URLs
 		$str = self::_validate_entities($str);
@@ -130,7 +131,7 @@ class Aert_Security {
 		/*
 		 * Remove Invisible Characters Again!
 		 */
-		$str = Aert_IFilter::remove_invisible_characters($str);
+		$str = IFilter::remove_invisible_characters($str);
 
 		/*
 		 * Convert all tabs to spaces
@@ -380,7 +381,7 @@ class Aert_Security {
 			$bad[] = '/';
 		}
 
-		$str = Aert_IFilter::remove_invisible_characters($str, FALSE);
+		$str = IFilter::remove_invisible_characters($str, FALSE);
 		return stripslashes(str_replace($bad, '', $str));
 	}
 

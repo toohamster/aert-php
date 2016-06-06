@@ -1,12 +1,12 @@
-<?php
+<?php namespace Aert;
 /**
  * 压测宝 View 类
  *
  * 使用简单的 view类加快项目的开发进度,避免学习blade模版语法
  * 
- * @author ken.xu@yunzhihui.com
+ * @author 449211678@qq.com
  */
-class Aert_View
+class View
 {
     /**
      * 视图文件所在目录
@@ -58,7 +58,7 @@ class Aert_View
     function execute()
     {
         $viewname = $this->viewname;
-        $child = new Aert_ViewLayer($this, $viewname);
+        $child = new ViewLayer($this, $viewname);
 
         $error_reporting = ini_get('error_reporting');
         error_reporting($error_reporting & ~E_NOTICE);
@@ -92,21 +92,21 @@ class Aert_View
 /**
  * 视图层
  *
- * @author ken.xu@yunzhihui.com
+ * @author 449211678@qq.com
  */
-class Aert_ViewLayer
+class ViewLayer
 {
     /**
      * 该层所属的视图对象
      *
-     * @var Aert_View
+     * @var View
      */
     public $view;
 
     /**
      * 父层对象
      *
-     * @var Aert_ViewLayer
+     * @var ViewLayer
      */
     public $parent;
 
@@ -148,10 +148,10 @@ class Aert_ViewLayer
     /**
      * 构造函数
      *
-     * @param Aert_View $view
+     * @param View $view
      * @param string $viewname
      */
-    function __construct(Aert_View $view, $viewname)
+    function __construct(View $view, $viewname)
     {
         $this->view     = $view;
         $this->viewname = $viewname;
@@ -160,7 +160,7 @@ class Aert_ViewLayer
     /**
      * 返回该层的顶级层（最底层的视图）
      *
-     * @return Aert_ViewLayer
+     * @return ViewLayer
      */
     function root()
     {
@@ -199,7 +199,7 @@ class Aert_ViewLayer
      */
     function extend($viewname)
     {
-        $this->parent = new Aert_ViewLayer($this->view, $viewname);
+        $this->parent = new ViewLayer($this->view, $viewname);
     }
 
     /**

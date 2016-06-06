@@ -1,12 +1,12 @@
-<?php
+<?php namespace Aert;
 /**
- * Aert_FileDownload 类
+ * FileDownload 类
  *
  * 实现表单的验证
  *
- * @author ken.xu@yunzhihui.com
+ * @author 449211678@qq.com
  */
-final class Aert_FileDownload
+final class FileDownload
 {
 	private static function responseHeader($filename,$charset='UTF-8',$mimeType='application/octet-stream')
 	{

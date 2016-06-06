@@ -1,10 +1,10 @@
-<?php
+<?php namespace Aert;
 /**
  * 时间格式化辅助类
  * 
- * @author ken.xu@yunzhihui.com
+ * @author 449211678@qq.com
  */
-class Aert_DateFormat
+class DateFormat
 {
     private static $_DIFF_FORMAT = array(
         'DAY'           => '%s天',

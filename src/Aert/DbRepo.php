@@ -1,10 +1,10 @@
-<?php
+<?php namespace Aert;
 /**
- * laravel Db 简化类
+ * Db 简化类
  * 
- * @author ken.xu@yunzhihui.com
+ * @author 449211678@qq.com
  */
-class Aert_DbRepo
+class DbRepo
 {
 	
 	private static $_ds_instances = array();
@@ -14,7 +14,7 @@ class Aert_DbRepo
      *
      * @param string $domain
      *
-     * @return Aert_Db_Query
+     * @return Db_Query
      */
     static function queryNode($domain='')
     {
@@ -22,7 +22,7 @@ class Aert_DbRepo
         if (!isset(self::$_ds_instances[$name]))
         {
             $dbo = empty($domain) ? DB::connection() : DB::connection($domain);
-            self::$_ds_instances[$name] = new Aert_Db_Query($dbo);
+            self::$_ds_instances[$name] = new Db_Query($dbo);
         }
         return self::$_ds_instances[$name];
     }
@@ -65,27 +65,27 @@ class Aert_DbRepo
 /**
  * 查询接口
  */
-class Aert_Db_Query
+class Db_Query
 {
 	
 	/**
 	 * Db_Actor 对象
 	 * 
-	 * @var Aert_Db_Actor
+	 * @var Db_Actor
 	 */
 	private $actor;
 	
 	function __construct($dbo)
 	{
 		$this->dbo = $dbo;
-		$this->ds = new Aert_Db_DataSource( $dbo->getPdo() );
-		$this->actor = new Aert_Db_Actor($this->ds);
+		$this->ds = new Db_DataSource( $dbo->getPdo() );
+		$this->actor = new Db_Actor($this->ds);
 	}
 	
 	/**
 	 * 返回数据源对象
 	 * 
-	 * @return Aert_Db_DataSource
+	 * @return Db_DataSource
 	 */
 	function getDataSource()
 	{
@@ -95,7 +95,7 @@ class Aert_Db_Query
 	/**
 	 * 返回Db操作对象
 	 * 
-	 * @return Aert_Db_Actor
+	 * @return Db_Actor
 	 */
 	function getDbActor()
 	{
@@ -114,13 +114,13 @@ class Aert_Db_Query
      */
     function selectRow($table ,$cond=null ,$fields='*', $sort=null)
 	{
-		$cond = Aert_Db_SqlHelper::parseCond($this->ds,$cond);
+		$cond = Db_SqlHelper::parseCond($this->ds,$cond);
 		if ($cond) $cond = "WHERE {$cond}";
 		if ($sort) $sort = "ORDER BY {$sort}";
 		
-		$qfields = Aert_Db_SqlHelper::qfields($fields,$table);
+		$qfields = Db_SqlHelper::qfields($fields,$table);
 		
-		return $this->actor->read(Aert_Db_Actor::MODE_READ_GETROW, array(
+		return $this->actor->read(Db_Actor::MODE_READ_GETROW, array(
 				"SELECT {$qfields} FROM {$table} {$cond} {$sort}"
 			));
 	}
@@ -139,14 +139,14 @@ class Aert_Db_Query
 	 */
 	function select($table, $cond=null, $fields='*', $sort=null, $limit=null, $calc_total=false)
 	{		
-		$cond = Aert_Db_SqlHelper::parseCond($this->ds,$cond);
+		$cond = Db_SqlHelper::parseCond($this->ds,$cond);
 		if ($cond) $cond = "WHERE {$cond}";
 		if ($sort) $sort = "ORDER BY {$sort}";
 		
-		$qfields = Aert_Db_SqlHelper::qfields($fields,$table);
-		$table = Aert_Db_SqlHelper::qtable($table);
+		$qfields = Db_SqlHelper::qfields($fields,$table);
+		$table = Db_SqlHelper::qtable($table);
 		
-		return $this->actor->read(Aert_Db_Actor::MODE_READ_GETALL, array(
+		return $this->actor->read(Db_Actor::MODE_READ_GETALL, array(
 				"SELECT {$qfields} FROM {$table} {$cond} {$sort}",
 				empty($limit) ? false : $limit,
 				$calc_total
@@ -167,19 +167,19 @@ class Aert_Db_Query
 	{
     	if ($distinct) $distinct = 'DISTINCT ';
     		
-    	$cond = Aert_Db_SqlHelper::parseCond($this->ds,$cond);
+    	$cond = Db_SqlHelper::parseCond($this->ds,$cond);
     	if ($cond) $cond = "WHERE {$cond}";
 		
     	if (is_null($fields) || trim($fields) == '*') {
             $fields = '*';
         } 
         else {
-            $fields = Aert_Db_SqlHelper::qfields($fields,$table);
+            $fields = Db_SqlHelper::qfields($fields,$table);
         }
         
-        $table = Aert_Db_SqlHelper::qtable($table);
+        $table = Db_SqlHelper::qtable($table);
         
-        return (int) $this->actor->read(Aert_Db_Actor::MODE_READ_GETONE, array(
+        return (int) $this->actor->read(Db_Actor::MODE_READ_GETONE, array(
 				"SELECT COUNT({$distinct}{$fields}) FROM {$table} {$cond}"
 			));
     }
@@ -195,14 +195,14 @@ class Aert_Db_Query
      */
     function insert($table, array $row, $pkval=false)
 	{
-		list($holders, $values) = Aert_Db_SqlHelper::placeholder($row);
+		list($holders, $values) = Db_SqlHelper::placeholder($row);
         $holders = implode(',', $holders);
         
-        $fields = Aert_Db_SqlHelper::qfields(array_keys($values));        
-        $table = Aert_Db_SqlHelper::qtable($table);
+        $fields = Db_SqlHelper::qfields(array_keys($values));        
+        $table = Db_SqlHelper::qtable($table);
 		
-        return $this->actor->write(Aert_Db_Actor::MODE_WRITE_INSERT, array(
-				Aert_Db_SqlHelper::bind($this->ds, "INSERT INTO {$table} ({$fields}) VALUES ({$holders})", $row),
+        return $this->actor->write(Db_Actor::MODE_WRITE_INSERT, array(
+				Db_SqlHelper::bind($this->ds, "INSERT INTO {$table} ({$fields}) VALUES ({$holders})", $row),
 				$pkval
 			));
 	}
@@ -220,17 +220,17 @@ class Aert_Db_Query
 	{
 		if ( empty($row) ) return false;
 					
-        list($pairs, $values) = Aert_Db_SqlHelper::placeholderPair($row);
+        list($pairs, $values) = Db_SqlHelper::placeholderPair($row);
         $pairs = implode(',', $pairs);
         
-        $table = Aert_Db_SqlHelper::qtable($table);
+        $table = Db_SqlHelper::qtable($table);
 		
-        $sql = Aert_Db_SqlHelper::bind($this->ds, "UPDATE {$table} SET {$pairs}", $row);
+        $sql = Db_SqlHelper::bind($this->ds, "UPDATE {$table} SET {$pairs}", $row);
         
-        $cond = Aert_Db_SqlHelper::parseCond($this->ds, $cond);
+        $cond = Db_SqlHelper::parseCond($this->ds, $cond);
         if ($cond) $sql .= " WHERE {$cond}";
         
-        return $this->actor->write(Aert_Db_Actor::MODE_WRITE_UPDATE, array(
+        return $this->actor->write(Db_Actor::MODE_WRITE_UPDATE, array(
 			 $sql
 		));		
 	}
@@ -245,12 +245,12 @@ class Aert_Db_Query
 	 */
 	function del($table, $cond=null)
 	{
-		$cond = Aert_Db_SqlHelper::parseCond($this->ds, $cond);
-		$table = Aert_Db_SqlHelper::qtable($table);
+		$cond = Db_SqlHelper::parseCond($this->ds, $cond);
+		$table = Db_SqlHelper::qtable($table);
 		
 		$sql = "DELETE FROM {$table} " . (empty($cond) ? '' : "WHERE {$cond}");
 		
-		return $this->actor->write(Aert_Db_Actor::MODE_WRITE_DELETE, array(
+		return $this->actor->write(Db_Actor::MODE_WRITE_DELETE, array(
 				$sql
 			));
 	}
@@ -269,22 +269,22 @@ class Aert_Db_Query
 	{
 		if ( empty($field) ) return false;
 		
-		$table = Aert_Db_SqlHelper::qtable($table);
-		$field = Aert_Db_SqlHelper::qfield($field);
+		$table = Db_SqlHelper::qtable($table);
+		$field = Db_SqlHelper::qfield($field);
 		
 		$sql = "UPDATE {$table} SET {$field}={$field}+{$incr}";
 		
-		$cond = Aert_Db_SqlHelper::parseCond($this->ds, $cond);
+		$cond = Db_SqlHelper::parseCond($this->ds, $cond);
         if ($cond) $sql .= " WHERE {$cond}";
         
-        return $this->actor->write(Aert_Db_Actor::MODE_WRITE_UPDATE, array(
+        return $this->actor->write(Db_Actor::MODE_WRITE_UPDATE, array(
 			 $sql
 		));	
 	}
 	
 }
 
-class Aert_Db_Actor
+class Db_Actor
 {
 		
 	/**
@@ -330,11 +330,11 @@ class Aert_Db_Actor
 	/**
 	 * 数据源对象
 	 * 
-	 * @var Aert_Db_DataSource
+	 * @var Db_DataSource
 	 */
 	private $ds;
 	
-	function __construct(Aert_Db_DataSource $ds)
+	function __construct(Db_DataSource $ds)
 	{
 		$this->ds = $ds;
 	}	
@@ -452,7 +452,7 @@ class Aert_Db_Actor
 /**
  * Db 数据源
  */
-class Aert_Db_DataSource
+class Db_DataSource
 {
 	
 	/**
@@ -514,7 +514,7 @@ class Aert_Db_DataSource
     	$this->affected_rows = 0;
     	
        	if (!empty($args)) {
-       		$sql = Aert_Db_SqlHelper::bind($this, $sql, $args);
+       		$sql = Db_SqlHelper::bind($this, $sql, $args);
 		}
 
         Log::debug($sql);
@@ -621,24 +621,24 @@ class Aert_Db_DataSource
 	 */
 	function sql_cond($cond, $dash=false)
 	{
-		return Aert_Db_SqlHelper::parseCond($this, $cond, $dash);
+		return Db_SqlHelper::parseCond($this, $cond, $dash);
 	}
 	
 }
 
-class Aert_Db_SqlHelper
+class Db_SqlHelper
 {
 	
 	/**
      * 根据 SQL 语句和提供的参数数组，生成最终的 SQL 语句
      *
-     * @param Aert_Db_DataSource $ds
+     * @param Db_DataSource $ds
      * @param string $sql
      * @param array $inputarr
      *
      * @return string
      */
-	static function bind(Aert_Db_DataSource $ds, $sql, array $inputarr)
+	static function bind(Db_DataSource $ds, $sql, array $inputarr)
 	{
 		$arr = explode('?', $sql);
         $sql = array_shift($arr);
@@ -653,13 +653,13 @@ class Aert_Db_SqlHelper
 	/**
 	 * 解析查询条件
 	 * 
-	 * @param Aert_Db_DataSource $ds
+	 * @param Db_DataSource $ds
 	 * @param mixed $cond
 	 * @param bool $dash 是否使用括号将返回的条件包括起来
 	 *
 	 * @return string
 	 */
-	static function parseCond(Aert_Db_DataSource $ds, $cond, $dash=false)
+	static function parseCond(Db_DataSource $ds, $cond, $dash=false)
 	{		
 		if (empty($cond)) return '';
  		

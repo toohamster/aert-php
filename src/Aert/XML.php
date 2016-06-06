@@ -1,8 +1,10 @@
-<?php
+<?php namespace Aert;
 /**
  * XML TO ARRAY
+ *
+ * @author 449211678@qq.com
  */
-class Aert_XML
+class XML
 {
 
     private static $xml = null;

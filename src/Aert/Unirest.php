@@ -1,12 +1,12 @@
-<?php
+<?php namespace Aert;
 /**
  * 修改自 https://github.com/Mashape/unirest-php
  *
  * 如果要支持上传文件,必须使用 php 5.5 以上版本
  *
- * @author ken.xu@yunzhihui.com
+ * @author 449211678@qq.com
  */
-class Aert_Unirest
+class Unirest
 {
     
     private static $verifyPeer = true;
@@ -19,7 +19,7 @@ class Aert_Unirest
      */
     public static function verifyPeer($enabled)
     {
-        Aert_Unirest::$verifyPeer = $enabled;
+        Unirest::$verifyPeer = $enabled;
     }
     
     /**
@@ -28,7 +28,7 @@ class Aert_Unirest
      */
     public static function timeout($seconds)
     {
-        Aert_Unirest::$socketTimeout = $seconds;
+        Unirest::$socketTimeout = $seconds;
     }
     
     /**
@@ -38,7 +38,7 @@ class Aert_Unirest
      */
     public static function defaultHeader($name, $value)
     {
-        Aert_Unirest::$defaultHeaders[$name] = $value;
+        Unirest::$defaultHeaders[$name] = $value;
     }
     
     /**
@@ -46,7 +46,7 @@ class Aert_Unirest
      */
     public static function clearDefaultHeaders()
     {
-        Aert_Unirest::$defaultHeaders = array();
+        Unirest::$defaultHeaders = array();
     }
     
     /**
@@ -60,7 +60,7 @@ class Aert_Unirest
      */
     public static function get($url, $headers = array(), $parameters = NULL, $username = NULL, $password = NULL)
     {
-        return Aert_Unirest::request(Aert_Unirest_HttpMethod::GET, $url, $parameters, $headers, $username, $password);
+        return Unirest::request(Unirest_HttpMethod::GET, $url, $parameters, $headers, $username, $password);
     }
     
     /**
@@ -74,7 +74,7 @@ class Aert_Unirest
      */
     public static function post($url, $headers = array(), $body = NULL, $username = NULL, $password = NULL)
     {
-        return Aert_Unirest::request(Aert_Unirest_HttpMethod::POST, $url, $body, $headers, $username, $password);
+        return Unirest::request(Unirest_HttpMethod::POST, $url, $body, $headers, $username, $password);
     }
     
     /**
@@ -88,7 +88,7 @@ class Aert_Unirest
      */
     public static function delete($url, $headers = array(), $body = NULL, $username = NULL, $password = NULL)
     {
-        return Aert_Unirest::request(Aert_Unirest_HttpMethod::DELETE, $url, $body, $headers, $username, $password);
+        return Unirest::request(Unirest_HttpMethod::DELETE, $url, $body, $headers, $username, $password);
     }
     
     /**
@@ -102,7 +102,7 @@ class Aert_Unirest
      */
     public static function put($url, $headers = array(), $body = NULL, $username = NULL, $password = NULL)
     {
-        return Aert_Unirest::request(Aert_Unirest_HttpMethod::PUT, $url, $body, $headers, $username, $password);
+        return Unirest::request(Unirest_HttpMethod::PUT, $url, $body, $headers, $username, $password);
     }
     
     /**
@@ -116,7 +116,7 @@ class Aert_Unirest
      */
     public static function patch($url, $headers = array(), $body = NULL, $username = NULL, $password = NULL)
     {
-        return Aert_Unirest::request(Aert_Unirest_HttpMethod::PATCH, $url, $body, $headers, $username, $password);
+        return Unirest::request(Unirest_HttpMethod::PATCH, $url, $body, $headers, $username, $password);
     }
     
     /**
@@ -148,14 +148,14 @@ class Aert_Unirest
             if ( class_exists('CURLFile', false) )
             {
                 if (!$value instanceof CURLFile AND (is_array($value) OR is_object($value))) {
-                    Aert_Unirest::http_build_query_for_curl($value, $new, $k);
+                    Unirest::http_build_query_for_curl($value, $new, $k);
                 } else {
                     $new[$k] = $value;
                 }
             }
             else {
                 if ( is_array($value) OR is_object($value) ) {
-                    Aert_Unirest::http_build_query_for_curl($value, $new, $k);
+                    Unirest::http_build_query_for_curl($value, $new, $k);
                 } else {
                     $new[$k] = $value;
                 }
@@ -170,7 +170,7 @@ class Aert_Unirest
     
     /**
      * Send a cURL request
-     * @param string $httpMethod HTTP method to use (based off Aert_Unirest_HttpMethod constants)
+     * @param string $httpMethod HTTP method to use (based off Unirest_HttpMethod constants)
      * @param string $url URL to send the request to
      * @param mixed $body request body
      * @param array $headers additional headers to send
@@ -185,9 +185,9 @@ class Aert_Unirest
             $headers = array();
 
         $lowercaseHeaders = array();
-        $finalHeaders = array_merge($headers, Aert_Unirest::$defaultHeaders);
+        $finalHeaders = array_merge($headers, Unirest::$defaultHeaders);
         foreach ($finalHeaders as $key => $val) {
-            $lowercaseHeaders[] = Aert_Unirest::getHeader($key, $val);
+            $lowercaseHeaders[] = Unirest::getHeader($key, $val);
         }
         
         $lowerCaseFinalHeaders = array_change_key_case($finalHeaders);
@@ -199,10 +199,10 @@ class Aert_Unirest
         }
         
         $ch = curl_init();
-        if ($httpMethod != Aert_Unirest_HttpMethod::GET) {
+        if ($httpMethod != Unirest_HttpMethod::GET) {
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $httpMethod);
             if (is_array($body) || $body instanceof Traversable) {
-                Aert_Unirest::http_build_query_for_curl($body, $postBody);
+                Unirest::http_build_query_for_curl($body, $postBody);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $postBody);
             } else {
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
@@ -213,20 +213,20 @@ class Aert_Unirest
             } else {
                 $url .= "?";
             }
-            Aert_Unirest::http_build_query_for_curl($body, $postBody);
+            Unirest::http_build_query_for_curl($body, $postBody);
             $url .= urldecode(http_build_query($postBody));
         }
         
-        curl_setopt($ch, CURLOPT_URL, Aert_Unirest::encodeUrl($url));
+        curl_setopt($ch, CURLOPT_URL, Unirest::encodeUrl($url));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $lowercaseHeaders);
         curl_setopt($ch, CURLOPT_HEADER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, Aert_Unirest::$verifyPeer);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, Unirest::$verifyPeer);
         curl_setopt($ch, CURLOPT_ENCODING, ""); // If an empty string, "", is set, a header containing all supported encoding types is sent.
-        if (Aert_Unirest::$socketTimeout != null) {
-            curl_setopt($ch, CURLOPT_TIMEOUT, Aert_Unirest::$socketTimeout);
+        if (Unirest::$socketTimeout != null) {
+            curl_setopt($ch, CURLOPT_TIMEOUT, Unirest::$socketTimeout);
         }
         if (!empty($username)) {
             curl_setopt($ch, CURLOPT_USERPWD, $username . ":" . ((empty($password)) ? "" : $password));
@@ -245,7 +245,7 @@ class Aert_Unirest
         $body        = substr($response, $header_size);
         $httpCode    = $curl_info["http_code"];
         
-        return new Aert_Unirest_HttpResponse($httpCode, $body, $header);
+        return new Unirest_HttpResponse($httpCode, $body, $header);
     }
     
     private static function getArrayFromQuerystring($querystring)
@@ -279,7 +279,7 @@ class Aert_Unirest
         $query  = (isset($url_parsed['query']) ? $url_parsed['query'] : null);
         
         if ($query != null) {
-            $query = '?' . http_build_query(Aert_Unirest::getArrayFromQuerystring($url_parsed['query']));
+            $query = '?' . http_build_query(Unirest::getArrayFromQuerystring($url_parsed['query']));
         }
         
         if ($port && $port[0] != ":")
@@ -297,7 +297,7 @@ class Aert_Unirest
     
 }
 
-interface Aert_Unirest_HttpMethod
+interface Unirest_HttpMethod
 {
     const DELETE = "DELETE";
     const GET = "GET";
@@ -306,7 +306,7 @@ interface Aert_Unirest_HttpMethod
     const PATCH = "PATCH";
 }
 
-class Aert_Unirest_HttpResponse
+class Unirest_HttpResponse
 {
     
     private $code;
