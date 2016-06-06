@@ -1,0 +1,30 @@
+{
+    "name": "toohamster/aert-php",
+    "description": "common php class helper",
+    "keywords": ["lib", "aert-php"],
+    "license": "MIT",
+    "homepage": "http://aert-php.duixueren.net",
+    "support": {
+        "issues": "https://github.com/toohamster/aert-php/issues",
+        "source": "https://github.com/toohamster/aert-php"
+    },
+    "authors": [
+        {
+            "name": "toohamster",
+            "email": "449211678@qq.com"
+        }
+    ],
+    "require": {
+        
+    },
+    "require-dev": {
+        
+    },
+    "autoload": {
+        "classmap": [],
+        "files": [],
+        "psr-4": {"Aert\\": "src/Aert"}
+    },
+    "minimum-stability": "dev"
+}
+
