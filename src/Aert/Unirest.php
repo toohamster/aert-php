@@ -10,6 +10,7 @@ class Unirest
 {
     
     private static $verifyPeer = true;
+    private static $proxy = false;
     private static $socketTimeout = null;
     private static $defaultHeaders = array();
     
@@ -20,6 +21,15 @@ class Unirest
     public static function verifyPeer($enabled)
     {
         Unirest::$verifyPeer = $enabled;
+    }
+
+    /**
+     * Verify SSL peer
+     * @param bool $proxy proxy, by default is false
+     */
+    public static function proxy($proxy)
+    {
+        Unirest::$proxy = $proxy;
     }
     
     /**
@@ -199,6 +209,13 @@ class Unirest
         }
         
         $ch = curl_init();
+
+        if ( Unirest::$proxy )
+        {
+            curl_setopt ($ch, CURLOPT_PROXY, Unirest::$proxy);
+        }
+        
+
         if ($httpMethod != Unirest_HttpMethod::GET) {
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $httpMethod);
             if (is_array($body) || $body instanceof Traversable) {
