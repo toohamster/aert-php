@@ -295,6 +295,11 @@ class UploaderFile
 	{
 		return $this->_file['full_path'];
 	}
+    
+    private function getBasename()
+    {
+        return preg_replace('/^.+[\\\\\\/]/', '', $this->filename());
+    }
 
 	/**
 	 * 检查上传的文件是否成功上传，并符合检查条件（文件类型、最大尺寸）
@@ -330,7 +335,7 @@ class UploaderFile
             }
             $allowed_types = array_flip($allowed_types);
 
-            $filename = strtolower(basename($this->filename()));
+            $filename = strtolower($this->getBasename());
             $extnames = normalize($filename, '.');
             array_shift($extnames);
             $passed = false;
