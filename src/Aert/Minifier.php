@@ -16,7 +16,6 @@ class Minifier
 		$replace = [' ', ' ', '>', '<', '\\1', ''];
 		$html = preg_replace($search, $replace, $body);
 		if (empty($html)) return $body;
-		// add demo est
 		return $html;
 	}
 
